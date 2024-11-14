@@ -3,6 +3,6 @@ import { createCampaign } from "../controllers/campaign";
 
 const router = express.Router();
 
-router.post("/create-campaigns", createCampaign);
+router.post("/create-campaign", createCampaign);
 
 export default router;
