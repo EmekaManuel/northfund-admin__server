@@ -5,7 +5,7 @@ import CampaignModel from "../models/campaignModal";
 const authorizeCampaign = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { id } = req.params;
+      const { startDate, email, title } = req.body;
       const { status } = req.body;
 
       if (!["approved", "rejected"].includes(status)) {
@@ -13,19 +13,68 @@ const authorizeCampaign = asyncHandler(
         return;
       }
 
-      const campaign = await CampaignModel.findByIdAndUpdate(
-        id,
-        { status, authorized: status === "approved" },
-        { new: true }
-      );
+      const campaign = await CampaignModel.findOne({
+        start_at: new Date(startDate),
+        email,
+        title,
+      });
 
       if (!campaign) {
         res.status(404).json({ message: "Campaign not found" });
         return;
       }
 
+      campaign.status = status;
+      campaign.authorized = status === "approved";
+
+      await campaign.save();
+
       res.status(200).json({
         message: `Campaign ${status}`,
+        campaign,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: "An unknown error occurred" });
+      }
+    }
+  }
+);
+
+const checkCampaignApproval = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { name, email, title } = req.body;
+
+      const campaign = await CampaignModel.findOne({
+        name: name,
+        email: email,
+        title,
+      });
+
+      if (!campaign) {
+        res.status(404).json({ message: "Campaign not found" });
+        return;
+      }
+
+      if (campaign.status.toLowerCase() !== "approved") {
+        res.status(403).json({
+          message: "Campaign has not been approved by the admin",
+        });
+        return;
+      }
+
+      if (!campaign.authorized) {
+        res.status(403).json({
+          message: "Campaign is not authorized for withdrawal",
+        });
+        return;
+      }
+
+      res.status(200).json({
+        message: "Campaign is approved for withdrawal",
         campaign,
       });
     } catch (error) {
@@ -78,4 +127,9 @@ const getCampaignById = asyncHandler(
   }
 );
 
-export { getAllCampaigns, authorizeCampaign, getCampaignById };
+export {
+  getAllCampaigns,
+  checkCampaignApproval,
+  authorizeCampaign,
+  getCampaignById,
+};

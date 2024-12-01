@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.get("/campaigns", getAllCampaigns);
 router.get("/campaigns/:id", getCampaignById);
-router.put("/campaigns/:id/authorize", authorizeCampaign);
+router.put("/campaigns/authorize", authorizeCampaign);
 
 export default router;
