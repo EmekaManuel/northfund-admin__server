@@ -10,4 +10,4 @@ router.get("/campaigns", admin_1.getAllCampaigns);
 router.get("/campaigns/:id", admin_1.getCampaignById);
 router.put("/campaigns/authorize", admin_1.authorizeCampaign);
 exports.default = router;
-//# sourceMappingURL=admin.routes.js.map
+//# sourceMappingURL=adminRoute.js.map

@@ -5,8 +5,8 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { dbConnect } from "./config/dbConnect";
-import campaignRouter from "../src/routes/campaign.routes";
-import adminRouter from "../src/routes/admin.routes";
+import adminRouter from "./routes/adminRoute";
+import campaignRouter from "./routes/campaignRoute";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 
 dotenv.config();

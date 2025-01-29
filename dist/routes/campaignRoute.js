@@ -10,4 +10,4 @@ const router = express_1.default.Router();
 router.post("/create-campaign", campaign_1.createCampaign);
 router.post("/authorize-campaign", admin_1.checkCampaignApproval);
 exports.default = router;
-//# sourceMappingURL=campaign.routes.js.map
+//# sourceMappingURL=campaignRoute.js.map

@@ -10,8 +10,8 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const morgan_1 = __importDefault(require("morgan"));
 const dbConnect_1 = require("./config/dbConnect");
-const campaign_routes_1 = __importDefault(require("../src/routes/campaign.routes"));
-const admin_routes_1 = __importDefault(require("../src/routes/admin.routes"));
+const adminRoute_1 = __importDefault(require("./routes/adminRoute"));
+const campaignRoute_1 = __importDefault(require("./routes/campaignRoute"));
 const errorHandler_1 = require("./middleware/errorHandler");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -27,8 +27,8 @@ app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
 //routes
-app.use("/api/admin", admin_routes_1.default);
-app.use("/api/campaign", campaign_routes_1.default);
+app.use("/api/admin", adminRoute_1.default);
+app.use("/api/campaign", campaignRoute_1.default);
 //middlewares
 app.use(errorHandler_1.notFound);
 app.use(errorHandler_1.errorHandler);
